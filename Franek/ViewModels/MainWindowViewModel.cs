@@ -1,6 +1,20 @@
-﻿namespace Franek.ViewModels;
+﻿using System.Collections.Generic;
+using CommunityToolkit.Mvvm.ComponentModel;
 
-public class MainWindowViewModel : ViewModelBase
+namespace Franek.ViewModels;
+
+public partial class MainWindowViewModel : ObservableObject
 {
-    public string Greeting => "Welcome to Avalonia!";
+    [ObservableProperty] private string? _wyszukiwanieKompozytor;
+    [ObservableProperty] private string? _wyszukiwanieTytul;
+    [ObservableProperty] private List<string> _dostepneOkresy = new();
+    [ObservableProperty] private List<string> _dostepneFormy = new();
+    [ObservableProperty] private List<string> _dostepneCharaktery = new();
+    [ObservableProperty] private List<string> _dostepnePoziomy = new();
+
+    public MainWindowViewModel()
+    {
+        DostepneOkresy.Add("romantyzm");
+        DostepneOkresy.Add("XX wiek");
+    }
 }

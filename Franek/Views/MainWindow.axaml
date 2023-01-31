@@ -3,9 +3,13 @@
         xmlns:vm="using:Franek.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:md="clr-namespace:Markdown.Avalonia;assembly=Markdown.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="600"
+        Width="700"
+        Height="600"
         x:Class="Franek.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
+        Background="FloralWhite"
         Title="Franek">
 
     <Design.DataContext>
@@ -14,6 +18,69 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <Window.Styles>
+        <Style Selector="TabItem">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Height" Value="22"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#2B579A"/>
+            <Setter Property="Foreground" Value="#F0F0F0"/>
+            <Setter Property="Margin" Value="0 0 0 0"/>
+            <Setter Property="Padding" Value="10 0"/>
+        </Style>
+        <Style Selector="TabItem:focus">
+            <Setter Property="Foreground" Value="#2B579A"/>
+            <Setter Property="Margin" Value="0 0 0 0"/>
+            <Setter Property="Padding" Value="10 0"/>
+        </Style>
+        <Style Selector="TabItem:selected">
+            <Setter Property="Foreground" Value="#2B579A"/>
+            <Setter Property="Margin" Value="0 0 0 0"/>
+            <Setter Property="Padding" Value="10 0"/>
+        </Style>
+    </Window.Styles>
+    
+    <TabControl>
+        <TabItem Header="Wyszukiwanie">
+            <StackPanel Orientation="Vertical">
+                <Grid ColumnDefinitions="1*, 1.5*" Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Margin="0, 0, 20, 0" HorizontalAlignment="Right">
+                        Nazwisko i imię kompozytora zawiera:
+                    </TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="0" AcceptsReturn="False" 
+                             Text="{Binding WyszukiwanieKompozytor}"/>
+                    <TextBlock Grid.Column="0" Grid.Row="1" Margin="0, 0, 20, 0" HorizontalAlignment="Right">
+                        Tytuł utworu zawiera:
+                    </TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="1" AcceptsReturn="False" 
+                             Text="{Binding WyszukiwanieTytul}"/>
+                </Grid>
+                <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
+                    <ComboBox Width="120" Margin="0, 0, 20, 0" 
+                              Items="{Binding DostepneOkresy}"></ComboBox>
+                    <ComboBox Width="120" Margin="0, 0, 20, 0"
+                              Items="{Binding DostepneFormy}"></ComboBox>
+                    <ComboBox Width="120" Margin="0, 0, 20, 0"
+                              Items="{Binding DostepneCharaktery}"></ComboBox>
+                    <ComboBox Width="120" Margin="0, 0, 0, 0"
+                              Items="{Binding DostepnePoziomy}"></ComboBox>
+                </StackPanel>
+                <Button Margin="10" Background="0x0078D7" FontSize="16" HorizontalAlignment="Center">Wyszukaj</Button>
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="Dodawanie">
+            <StackPanel Margin="0, 20, 0, 0">
+                <TextBlock Text="I am in the triangle page ! I'll put a button to show you that each page contains what you want." HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Button>A button in the triangle page !</Button>
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="Pomoc">
+            <md:MarkdownScrollViewer Source="avares://Franek/Assets/Help/pomoc.md" Margin="0, 10, 0, 10"/>
+        </TabItem>
+    </TabControl>
 
 </Window>
