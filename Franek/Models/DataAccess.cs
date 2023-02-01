@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data.SQLite;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 
@@ -14,7 +15,27 @@ public class DataAccess
         SQLiteConnection connection = new SQLiteConnection();
         connection.ConnectionString = ConfigurationManager.ConnectionStrings["Myconnstr"].ConnectionString;
         connection.Open();
-        var output = connection.Query<Utwor>("SELECT * FROM tabela").ToList();
+        var sb = new StringBuilder();
+        sb.Append("SELECT * FROM tabela WHERE id >= 0");
+        if (pytanie.Kompozytor is not null && pytanie.Kompozytor != "")
+        {
+            sb.Append($" AND kompozytor LIKE '%{pytanie.Kompozytor}%' COLLATE utf8_general_ci");
+        }
+        if (pytanie.Tytul is not null && pytanie.Tytul != "")
+        {
+            sb.Append($" AND tytul LIKE '%{pytanie.Tytul}%' COLLATE utf8_general_ci");
+        }
+        if (pytanie.Okres is not null)
+        {
+            sb.Append($" AND okres = '{pytanie.Okres}'");
+        }
+        if (pytanie.Forma is not null)
+        {
+            sb.Append($" AND forma = '{pytanie.Forma}'");
+        }
+        
+
+        var output = connection.Query<Utwor>(sb.ToString()).ToList();
         connection.Close();
         return output;
     }

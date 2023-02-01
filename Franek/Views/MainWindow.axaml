@@ -66,13 +66,17 @@
                              Text="{Binding WyszukiwanieTytul}"/>
                 </Grid>
                 <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
-                    <ComboBox Width="180" Margin="0, 0, 20, 0" SelectedIndex="0"
+                    <ComboBox Width="180" Margin="0, 0, 20, 0" 
+                              SelectedIndex="{Binding IdxWybranyOkres}"
                               Items="{Binding DostepneOkresy}"></ComboBox>
                     <ComboBox Width="180" Margin="0, 0, 20, 0"
+                              SelectedIndex="{Binding IdxWybranaForma}"
                               Items="{Binding DostepneFormy}"></ComboBox>
                     <ComboBox Width="180" Margin="0, 0, 20, 0"
+                              SelectedIndex="{Binding IdxWybranyCharakter}"
                               Items="{Binding DostepneCharaktery}"></ComboBox>
                     <ComboBox Width="180" Margin="0, 0, 0, 0"
+                              SelectedIndex="{Binding IdxWybranyPoziom}"
                               Items="{Binding DostepnePoziomy}"></ComboBox>
                 </StackPanel>
                 <Button Margin="20" Background="#3392DC" FontSize="16" HorizontalAlignment="Center"

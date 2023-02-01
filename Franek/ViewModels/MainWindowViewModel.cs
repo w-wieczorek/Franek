@@ -22,6 +22,10 @@ public partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] private List<string> _dostepneFormy = new();
     [ObservableProperty] private List<string> _dostepneCharaktery = new();
     [ObservableProperty] private List<string> _dostepnePoziomy = new();
+    [ObservableProperty] private int _idxWybranyOkres = 0;
+    [ObservableProperty] private int _idxWybranaForma = 0;
+    [ObservableProperty] private int _idxWybranyCharakter = 0;
+    [ObservableProperty] private int _idxWybranyPoziom = 0;
 
     [ObservableProperty] private object _wybranyItem;
     
@@ -38,13 +42,26 @@ public partial class MainWindowViewModel : ObservableObject
         DostepneFormy.AddRange(ConfigurationManager.AppSettings["forma"]!.Split(','));
         DostepneCharaktery.Add("Dowolny charakter");
         DostepneCharaktery.AddRange(ConfigurationManager.AppSettings["charakter"]!.Split(','));
+        DostepnePoziomy.Add("Dowolny poziom");
+        DostepnePoziomy.AddRange(ConfigurationManager.AppSettings["poziom"]!.Split(','));
     }
     
     [RelayCommand]
     public void OnWyszukaj()
     {
+        Utwor utworPytanie = new Utwor
+        {
+            Kompozytor = WyszukiwanieKompozytor,
+            Tytul = WyszukiwanieTytul,
+            Okres = IdxWybranyOkres == 0 ? null : DostepneOkresy[IdxWybranyOkres],
+            Forma = IdxWybranaForma == 0 ? null : DostepneFormy[IdxWybranaForma],
+            Charakter = IdxWybranyCharakter == 0 ? null : DostepneCharaktery[IdxWybranyCharakter],
+            Poziom = IdxWybranyPoziom == 0 ? null : DostepnePoziomy[IdxWybranyPoziom],
+            Inne = null,
+            Pdf = null
+        };
         DataAccess db = new DataAccess();
-        List<Utwor> listaUtworow = db.ZnajdzUtwory(new Utwor { Id = 0 });
+        List<Utwor> listaUtworow = db.ZnajdzUtwory(utworPytanie);
         ZnalezioneUtwory.Clear();
         znalezionePrzedZmianami.Clear();
         foreach (var d in listaUtworow)
