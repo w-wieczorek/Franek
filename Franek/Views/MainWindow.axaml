@@ -18,7 +18,7 @@
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-
+    
     <Window.Styles>
         <Style Selector="TabItem">
             <Setter Property="FontSize" Value="14"/>
@@ -79,12 +79,12 @@
                         Command="{Binding OnWyszukaj}">
                     Wyszukaj
                 </Button>
-                <DataGrid Items="{Binding ZnalezioneUtwory}" 
-                          SelectedIndex="{Binding WybranyIdx}" AutoGenerateColumns="False" 
-                          VerticalAlignment="Stretch">
+                <DataGrid Name="MyDataGrid" Items="{Binding ZnalezioneUtwory, Mode=TwoWay}" 
+                          SelectedItem="{Binding WybranyItem}" 
+                          AutoGenerateColumns="False" VerticalAlignment="Stretch">
                     <DataGrid.KeyBindings>
-                        <KeyBinding Gesture="Enter" Command="{Binding OnEnter}" />
                         <KeyBinding Gesture="Delete" Command="{Binding OnDelete}" />
+                        <KeyBinding Gesture="F10" Command="{Binding OnF10}" />
                     </DataGrid.KeyBindings>
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Nr" FontSize="12" Foreground="black"
@@ -107,15 +107,18 @@
                                             Width="1*" IsReadOnly="True" /> 
                         <DataGridTextColumn Header="Stopień trudności" FontSize="12" Foreground="black"
                                             Binding="{Binding Poziom}" 
-                                            Width="1.6*" IsReadOnly="True" />
+                                            Width="1.4*" IsReadOnly="True" />
                         <DataGridTextColumn Header="Inne uwagi" FontSize="12" Foreground="black"
-                                            Binding="{Binding Inne}" 
-                                            Width="1.8*" IsReadOnly="True" />
+                                            Binding="{Binding Inne, Mode=TwoWay}" 
+                                            Width="2*" IsReadOnly="False" />
                         <DataGridTextColumn Header="PDF" FontSize="12" Foreground="black"
                                             Binding="{Binding Pdf}" 
                                             Width="1*" IsReadOnly="True" />
                     </DataGrid.Columns>
                 </DataGrid>
+                <Button Margin="20" HorizontalAlignment="Center" Command="{Binding OnZmiany}">
+                    Zatwierdź zmiany
+                </Button>
             </StackPanel>
         </TabItem>
         <TabItem Header="Dodawanie">

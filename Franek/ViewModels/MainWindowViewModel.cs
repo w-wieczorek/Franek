@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Configuration;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Franek.Models;
@@ -20,55 +23,98 @@ public partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] private List<string> _dostepneCharaktery = new();
     [ObservableProperty] private List<string> _dostepnePoziomy = new();
 
-    [ObservableProperty] private int _wybranyIdx;
+    [ObservableProperty] private object _wybranyItem;
     
     public ObservableCollection<Utwor> ZnalezioneUtwory { get; }
+    private List<Utwor> znalezionePrzedZmianami;
 
     public MainWindowViewModel()
     {
         ZnalezioneUtwory = new(new Utwor[] {});
-        WybranyIdx = 0;
+        znalezionePrzedZmianami = new();
         DostepneOkresy.Add("Dowolny okres");
-        DostepneOkresy.Add("romantyzm");
-        DostepneOkresy.Add("XX wiek");
+        DostepneOkresy.AddRange(ConfigurationManager.AppSettings["okres"]!.Split(','));
+        DostepneFormy.Add("Dowolna forma");
+        DostepneFormy.AddRange(ConfigurationManager.AppSettings["forma"]!.Split(','));
+        DostepneCharaktery.Add("Dowolny charakter");
+        DostepneCharaktery.AddRange(ConfigurationManager.AppSettings["charakter"]!.Split(','));
     }
     
-    [RelayCommand]
-    public void OnEnter()
-    {
-        if (ZnalezioneUtwory.Count > 0 && WybranyIdx >= 0 && WybranyIdx < ZnalezioneUtwory.Count)
-        {
-            string plikDoSkasowania = ZnalezioneUtwory[WybranyIdx].Pdf ?? throw new ArgumentNullException("ZnalezioneUtwory[WybranyIdx].Pdf");
-            Process foxit = new Process();
-
-            foxit.StartInfo.FileName = $"\"{ConfigurationManager.AppSettings["pdfreader"]}\"";
-            foxit.StartInfo.Arguments = $"{ConfigurationManager.AppSettings["katalog"]}\\{plikDoSkasowania}";
-
-            foxit.Start();
-        }
-    }
-
     [RelayCommand]
     public void OnWyszukaj()
     {
         DataAccess db = new DataAccess();
         List<Utwor> listaUtworow = db.ZnajdzUtwory(new Utwor { Id = 0 });
         ZnalezioneUtwory.Clear();
+        znalezionePrzedZmianami.Clear();
         foreach (var d in listaUtworow)
         {
             ZnalezioneUtwory.Add(d);
+            znalezionePrzedZmianami.Add(new Utwor(d));
         }
     }
 
     [RelayCommand]
+    public async Task OnZmiany()
+    {
+        DataAccess db = new DataAccess();
+        int liczbaZmian = await db.WykonajZmiany(ZnalezioneUtwory.ToList(), znalezionePrzedZmianami);
+        await MessageBox.Show(MyReferences.MainWindow,
+            $"\n          Liczba wykonanych zmian wynosi {liczbaZmian}.          \n",
+            "Podsumowanie", MessageBox.MessageBoxButtons.Ok);
+    }
+
+    /*
+    [RelayCommand]
+    public void OnEnter()
+    {
+        if (ZnalezioneUtwory.Count > 0)
+        {
+            Utwor? utwor = (Utwor?)WybranyItem;
+            if (utwor is not null)
+            {
+                DataAccess db = new DataAccess();
+                db.ModyfikujUwagi(utwor.Id, utwor.Inne ?? "");
+            }
+        }
+    }
+    */
+
+    [RelayCommand]
     public async Task OnDelete()
     {
-        if (ZnalezioneUtwory.Count > 0 && WybranyIdx >= 0 && WybranyIdx < ZnalezioneUtwory.Count)
+        if (ZnalezioneUtwory.Count > 0)
         {
-            int idUtworu = ZnalezioneUtwory[WybranyIdx].Id;
-            var odpowiedz = await MessageBox.Show(MyReferences.MainWindow, 
-                $"\n          Czy na pewno usunąć utwór nr {idUtworu}?          \n",
-                "Proszę potwierdzić", MessageBox.MessageBoxButtons.YesNo);
+            Utwor? utwor = (Utwor?)WybranyItem;
+            if (utwor is not null)
+            {
+                var odpowiedz = await MessageBox.Show(MyReferences.MainWindow,
+                    $"\n          Czy na pewno usunąć utwór nr {utwor.Id}?          \n",
+                    "Proszę potwierdzić", MessageBox.MessageBoxButtons.YesNo);
+                if (odpowiedz == MessageBox.MessageBoxResult.Yes)
+                {
+                    ZnalezioneUtwory.Remove(utwor);
+                }
+            }
+        }
+    }
+
+    [RelayCommand]
+    public void OnF10()
+    {
+        if (ZnalezioneUtwory.Count > 0)
+        {
+            Utwor? utwor = (Utwor?)WybranyItem;
+            if (utwor is not null)
+            {
+                Process foxit = new Process();
+
+                foxit.StartInfo.FileName = $"\"{ConfigurationManager.AppSettings["pdfreader"]}\"";
+                foxit.StartInfo.Arguments = $"{ConfigurationManager.AppSettings["katalog"]}\\{utwor.Pdf}";
+
+                foxit.Start();
+            }
         }
     }                                   
+
 }

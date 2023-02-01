@@ -15,12 +15,20 @@
 ### Jak otworzyć plik pdf skojarzony z danym utworem?
 
 1. Wyszukaj dany utwór.
-2. Zaznacz go w tabeli i na klawiaturze naciśnij klawisz *Enter*.
+2. Zaznacz go w tabeli i na klawiaturze naciśnij klawisz *F10*.
 
 ### Jak usunąć utwór z bazy danych?
 
 1. Wyszukaj dany utwór.
 2. Zaznacz go w tabeli i na klawiaturze naciśnij klawisz *Delete*.
+3. Utwór nie będzie widoczny w tabeli. Jeśli chcesz, aby został on także usunięty z bazy danych, to kliknij przycisk *Zatwierdź zmiany*.
+
+### Jak dopisać/zmodyfikować uwagi?
+
+1. Wyszukaj dany utwór.
+2. Zaznacz go w tabeli i kliknij komórkę z uwagami.
+3. Dokonaj zmian.
+4. Nowe uwagi będą widoczne w tabeli. Jeśli chcesz, aby zostały one także utrwalone w bazie danych, to kliknij przycisk *Zatwierdź zmiany*.
 
 ### Do czego służy plik konfiguracyjny Franek.dll.config?
 
