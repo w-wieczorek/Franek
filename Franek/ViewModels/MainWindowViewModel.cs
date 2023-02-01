@@ -17,7 +17,11 @@ namespace Franek.ViewModels;
 public partial class MainWindowViewModel : ObservableObject
 {
     [ObservableProperty] private string? _wyszukiwanieKompozytor;
+    [ObservableProperty] private string? _dodawanieKompozytor;
     [ObservableProperty] private string? _wyszukiwanieTytul;
+    [ObservableProperty] private string? _dodawanieTytul;
+    [ObservableProperty] private string? _dodawanieUwagi;
+    [ObservableProperty] private string? _dodawaniePdf;
     [ObservableProperty] private List<string> _dostepneOkresy = new();
     [ObservableProperty] private List<string> _dostepneFormy = new();
     [ObservableProperty] private List<string> _dostepneCharaktery = new();
@@ -26,6 +30,10 @@ public partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] private int _idxWybranaForma = 0;
     [ObservableProperty] private int _idxWybranyCharakter = 0;
     [ObservableProperty] private int _idxWybranyPoziom = 0;
+    [ObservableProperty] private int _idxWybranyOkresDodawanie = 0;
+    [ObservableProperty] private int _idxWybranaFormaDodawanie = 0;
+    [ObservableProperty] private int _idxWybranyCharakterDodawanie = 0;
+    [ObservableProperty] private int _idxWybranyPoziomDodawanie = 0;
 
     [ObservableProperty] private object _wybranyItem;
     
@@ -81,21 +89,16 @@ public partial class MainWindowViewModel : ObservableObject
             "Podsumowanie", MessageBox.MessageBoxButtons.Ok);
     }
 
-    /*
     [RelayCommand]
-    public void OnEnter()
+    public async Task OnZapiszDane()
     {
-        if (ZnalezioneUtwory.Count > 0)
-        {
-            Utwor? utwor = (Utwor?)WybranyItem;
-            if (utwor is not null)
-            {
-                DataAccess db = new DataAccess();
-                db.ModyfikujUwagi(utwor.Id, utwor.Inne ?? "");
-            }
-        }
+        DataAccess db = new DataAccess();
+        var nowy = new Utwor();
+        await db.ZapiszNowyUtwor(nowy);
+        await MessageBox.Show(MyReferences.MainWindow,
+            "\n          Liczba wykonanych zmian wynosi.          \n",
+            "Podsumowanie", MessageBox.MessageBoxButtons.Ok);
     }
-    */
 
     [RelayCommand]
     public async Task OnDelete()

@@ -33,8 +33,14 @@ public class DataAccess
         {
             sb.Append($" AND forma = '{pytanie.Forma}'");
         }
-        
-
+        if (pytanie.Charakter is not null)
+        {
+            sb.Append($" AND charakter = '{pytanie.Charakter}'");
+        }
+        if (pytanie.Poziom is not null)
+        {
+            sb.Append($" AND poziom = '{pytanie.Poziom}'");
+        }
         var output = connection.Query<Utwor>(sb.ToString()).ToList();
         connection.Close();
         return output;
@@ -71,5 +77,10 @@ public class DataAccess
         }
         await connection.CloseAsync();
         return liczbaZmian;
+    }
+
+    public async Task ZapiszNowyUtwor(Utwor nowy)
+    {
+        await Task.Delay(100);
     }
 }

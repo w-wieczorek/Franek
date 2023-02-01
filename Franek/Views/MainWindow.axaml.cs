@@ -1,7 +1,3 @@
-using System.Configuration;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using Avalonia;
 using Avalonia.Controls;
 using Franek.Models;
 using Franek.ViewModels;

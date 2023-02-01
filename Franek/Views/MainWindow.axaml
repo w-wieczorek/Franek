@@ -126,9 +126,60 @@
             </StackPanel>
         </TabItem>
         <TabItem Header="Dodawanie">
-            <StackPanel Margin="0, 20, 0, 0">
-                <TextBlock Text="I am in the triangle page ! I'll put a button to show you that each page contains what you want." HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <Button>A button in the triangle page !</Button>
+            <StackPanel Orientation="Vertical">
+                <Grid ColumnDefinitions="1*, 1.5*, 0.5*" Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Margin="0, 0, 20, 20" 
+                               HorizontalAlignment="Right" VerticalAlignment="Center">
+                        Nazwisko i imię kompozytora (*):
+                    </TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="0" AcceptsReturn="False" Margin="0, 0, 0, 20"
+                             Text="{Binding DodawanieKompozytor, Mode=TwoWay}"/>
+                    <TextBlock Grid.Column="0" Grid.Row="1" Margin="0, 0, 20, 0" 
+                               HorizontalAlignment="Right" VerticalAlignment="Center">
+                        Tytuł utworu (*):
+                    </TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="1" AcceptsReturn="False" 
+                             Text="{Binding DodawanieTytul, Mode=TwoWay}"/>
+                </Grid>
+                <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
+                    <ComboBox Width="180" Margin="0, 0, 20, 0" 
+                              SelectedIndex="{Binding IdxWybranyOkresDodawanie, Mode=TwoWay}"
+                              Items="{Binding DostepneOkresy}"></ComboBox>
+                    <ComboBox Width="180" Margin="0, 0, 20, 0"
+                              SelectedIndex="{Binding IdxWybranaFormaDodawanie, Mode=TwoWay}"
+                              Items="{Binding DostepneFormy}"></ComboBox>
+                    <ComboBox Width="180" Margin="0, 0, 20, 0"
+                              SelectedIndex="{Binding IdxWybranyCharakterDodawanie, Mode=TwoWay}"
+                              Items="{Binding DostepneCharaktery}"></ComboBox>
+                    <ComboBox Width="180" Margin="0, 0, 0, 0"
+                              SelectedIndex="{Binding IdxWybranyPoziomDodawanie, Mode=TwoWay}"
+                              Items="{Binding DostepnePoziomy}"></ComboBox>
+                </StackPanel>
+                <Grid ColumnDefinitions="1*, 1.5*, 0.5*" Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Margin="0, 0, 20, 20" 
+                               HorizontalAlignment="Right" VerticalAlignment="Center">
+                        Inne uwagi:
+                    </TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="0" AcceptsReturn="False" Margin="0, 0, 0, 20"
+                             Text="{Binding DodawanieUwagi, Mode=TwoWay}"/>
+                    <TextBlock Grid.Column="0" Grid.Row="1" Margin="0, 0, 20, 0" 
+                               HorizontalAlignment="Right" VerticalAlignment="Center">
+                        Nazwa pliku pdf:
+                    </TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="1" AcceptsReturn="False" 
+                             Text="{Binding DodawaniePdf, Mode=TwoWay}"/>
+                </Grid>
+                <Button Margin="20" HorizontalAlignment="Center" Command="{Binding OnZapiszDane}">
+                    Zapisz dane
+                </Button>
             </StackPanel>
         </TabItem>
         <TabItem Header="Pomoc">
