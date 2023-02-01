@@ -4,9 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:md="clr-namespace:Markdown.Avalonia;assembly=Markdown.Avalonia"
-        mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="600"
-        Width="700"
-        Height="600"
+        xmlns:local="clr-namespace:Franek.ViewModels;assembly=Franek"
+        mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="700"
+        Width="1400"
+        Height="700"
         x:Class="Franek.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Background="FloralWhite"
@@ -38,38 +39,83 @@
             <Setter Property="Margin" Value="0 0 0 0"/>
             <Setter Property="Padding" Value="10 0"/>
         </Style>
+        <Style Selector="DataGrid">
+            <Setter Property="GridLinesVisibility" Value="All" />
+        </Style>
     </Window.Styles>
     
     <TabControl>
         <TabItem Header="Wyszukiwanie">
             <StackPanel Orientation="Vertical">
-                <Grid ColumnDefinitions="1*, 1.5*" Margin="10">
+                <Grid ColumnDefinitions="1*, 1.5*, 0.5*" Margin="10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Column="0" Grid.Row="0" Margin="0, 0, 20, 0" HorizontalAlignment="Right">
+                    <TextBlock Grid.Column="0" Grid.Row="0" Margin="0, 0, 20, 20" 
+                               HorizontalAlignment="Right" VerticalAlignment="Center">
                         Nazwisko i imię kompozytora zawiera:
                     </TextBlock>
-                    <TextBox Grid.Column="1" Grid.Row="0" AcceptsReturn="False" 
+                    <TextBox Grid.Column="1" Grid.Row="0" AcceptsReturn="False" Margin="0, 0, 0, 20"
                              Text="{Binding WyszukiwanieKompozytor}"/>
-                    <TextBlock Grid.Column="0" Grid.Row="1" Margin="0, 0, 20, 0" HorizontalAlignment="Right">
+                    <TextBlock Grid.Column="0" Grid.Row="1" Margin="0, 0, 20, 0" 
+                               HorizontalAlignment="Right" VerticalAlignment="Center">
                         Tytuł utworu zawiera:
                     </TextBlock>
                     <TextBox Grid.Column="1" Grid.Row="1" AcceptsReturn="False" 
                              Text="{Binding WyszukiwanieTytul}"/>
                 </Grid>
                 <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
-                    <ComboBox Width="120" Margin="0, 0, 20, 0" 
+                    <ComboBox Width="180" Margin="0, 0, 20, 0" SelectedIndex="0"
                               Items="{Binding DostepneOkresy}"></ComboBox>
-                    <ComboBox Width="120" Margin="0, 0, 20, 0"
+                    <ComboBox Width="180" Margin="0, 0, 20, 0"
                               Items="{Binding DostepneFormy}"></ComboBox>
-                    <ComboBox Width="120" Margin="0, 0, 20, 0"
+                    <ComboBox Width="180" Margin="0, 0, 20, 0"
                               Items="{Binding DostepneCharaktery}"></ComboBox>
-                    <ComboBox Width="120" Margin="0, 0, 0, 0"
+                    <ComboBox Width="180" Margin="0, 0, 0, 0"
                               Items="{Binding DostepnePoziomy}"></ComboBox>
                 </StackPanel>
-                <Button Margin="10" Background="0x0078D7" FontSize="16" HorizontalAlignment="Center">Wyszukaj</Button>
+                <Button Margin="20" Background="#3392DC" FontSize="16" HorizontalAlignment="Center"
+                        Command="{Binding OnWyszukaj}">
+                    Wyszukaj
+                </Button>
+                <DataGrid Items="{Binding ZnalezioneUtwory}" 
+                          SelectedIndex="{Binding WybranyIdx}" AutoGenerateColumns="False" 
+                          VerticalAlignment="Stretch">
+                    <DataGrid.KeyBindings>
+                        <KeyBinding Gesture="Enter" Command="{Binding OnEnter}" />
+                        <KeyBinding Gesture="Delete" Command="{Binding OnDelete}" />
+                    </DataGrid.KeyBindings>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Nr" FontSize="12" Foreground="black"
+                                            Binding="{Binding Id}" 
+                                            Width="0.6*" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Nazwisko kompozytora" FontSize="12" Foreground="black"
+                                            Binding="{Binding Kompozytor}" 
+                                            Width="1.8*" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Tytuł utworu" FontSize="12" Foreground="black"
+                                            Binding="{Binding Tytul}" 
+                                            Width="2*" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Okres" FontSize="12" Foreground="black"
+                                            Binding="{Binding Okres}" 
+                                            Width="0.8*" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Forma" FontSize="12" Foreground="black"
+                                            Binding="{Binding Forma}" 
+                                            Width="0.8*" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Charakter" FontSize="12" Foreground="black"
+                                            Binding="{Binding Charakter}" 
+                                            Width="1*" IsReadOnly="True" /> 
+                        <DataGridTextColumn Header="Stopień trudności" FontSize="12" Foreground="black"
+                                            Binding="{Binding Poziom}" 
+                                            Width="1.6*" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Inne uwagi" FontSize="12" Foreground="black"
+                                            Binding="{Binding Inne}" 
+                                            Width="1.8*" IsReadOnly="True" />
+                        <DataGridTextColumn Header="PDF" FontSize="12" Foreground="black"
+                                            Binding="{Binding Pdf}" 
+                                            Width="1*" IsReadOnly="True" />
+                    </DataGrid.Columns>
+                </DataGrid>
             </StackPanel>
         </TabItem>
         <TabItem Header="Dodawanie">
