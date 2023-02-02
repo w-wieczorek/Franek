@@ -46,8 +46,8 @@
     
     <TabControl>
         <TabItem Header="Wyszukiwanie">
-            <StackPanel Orientation="Vertical">
-                <Grid ColumnDefinitions="1*, 1.5*, 0.5*" Margin="10">
+            <DockPanel LastChildFill="True">
+                <Grid DockPanel.Dock="Top" ColumnDefinitions="1*, 1.5*, 0.5*" Margin="10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
@@ -65,7 +65,7 @@
                     <TextBox Grid.Column="1" Grid.Row="1" AcceptsReturn="False" 
                              Text="{Binding WyszukiwanieTytul}"/>
                 </Grid>
-                <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
                     <ComboBox Width="180" Margin="0, 0, 20, 0" 
                               SelectedIndex="{Binding IdxWybranyOkres}"
                               Items="{Binding DostepneOkresy}"></ComboBox>
@@ -79,11 +79,18 @@
                               SelectedIndex="{Binding IdxWybranyPoziom}"
                               Items="{Binding DostepnePoziomy}"></ComboBox>
                 </StackPanel>
-                <Button Margin="20" Background="#3392DC" FontSize="16" HorizontalAlignment="Center"
-                        Command="{Binding OnWyszukaj}">
-                    Wyszukaj
-                </Button>
-                <DataGrid Name="MyDataGrid" Items="{Binding ZnalezioneUtwory, Mode=TwoWay}" 
+                <Grid DockPanel.Dock="Top" ColumnDefinitions="*, *, *, *, *">
+                    <Button Grid.Column="2" Margin="20" Background="#3392DC" FontSize="16" HorizontalAlignment="Center"
+                            Command="{Binding OnWyszukaj}">
+                        Wyszukaj
+                    </Button>
+                    <Button Grid.Column="3" Grid.ColumnSpan="2" Margin="20" HorizontalAlignment="Center" 
+                            Command="{Binding OnZmiany}">
+                        Zatwierdź nowe uwagi / usunięcie
+                    </Button>
+                </Grid>
+                <DataGrid DockPanel.Dock="Bottom" Name="MyDataGrid" 
+                          Items="{Binding ZnalezioneUtwory, Mode=TwoWay}" 
                           SelectedItem="{Binding WybranyItem}" 
                           AutoGenerateColumns="False" VerticalAlignment="Stretch">
                     <DataGrid.KeyBindings>
@@ -120,10 +127,7 @@
                                             Width="1*" IsReadOnly="True" />
                     </DataGrid.Columns>
                 </DataGrid>
-                <Button Margin="20" HorizontalAlignment="Center" Command="{Binding OnZmiany}">
-                    Zatwierdź zmiany
-                </Button>
-            </StackPanel>
+            </DockPanel>
         </TabItem>
         <TabItem Header="Dodawanie">
             <StackPanel Orientation="Vertical">

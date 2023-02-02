@@ -77,6 +77,7 @@ public partial class MainWindowViewModel : ObservableObject
             ZnalezioneUtwory.Add(d);
             znalezionePrzedZmianami.Add(new Utwor(d));
         }
+        // MyReferences.MyDataGrid.MinHeight = 400;
     }
 
     [RelayCommand]
@@ -152,7 +153,7 @@ public partial class MainWindowViewModel : ObservableObject
         if (ZnalezioneUtwory.Count > 0)
         {
             Utwor? utwor = (Utwor?)WybranyItem;
-            if (utwor is not null)
+            if (!String.IsNullOrWhiteSpace(utwor.Pdf))
             {
                 Process foxit = new Process();
 

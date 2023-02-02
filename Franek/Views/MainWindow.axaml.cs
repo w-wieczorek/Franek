@@ -10,6 +10,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         MyReferences.MainWindow = this;
+        MyReferences.MyDataGrid = this.MyDataGrid;
 
         MyDataGrid.DoubleTapped += (sender, args) =>
         {
