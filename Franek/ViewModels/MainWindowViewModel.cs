@@ -94,10 +94,37 @@ public partial class MainWindowViewModel : ObservableObject
     {
         DataAccess db = new DataAccess();
         var nowy = new Utwor();
+        nowy.Kompozytor = DodawanieKompozytor;
+        if (String.IsNullOrEmpty(nowy.Kompozytor))
+        {
+            await MessageBox.Show(MyReferences.MainWindow,
+                "\n          Pole dotyczące kompozytora nie może być puste.          \n",
+                "Uzupełnij dane", MessageBox.MessageBoxButtons.Ok);
+            return;
+        }
+        nowy.Tytul = DodawanieTytul;
+        if (String.IsNullOrEmpty(nowy.Tytul))
+        {
+            await MessageBox.Show(MyReferences.MainWindow,
+                "\n          Konieczne jest wprowadzenie tytułu.          \n",
+                "Uzupełnij dane", MessageBox.MessageBoxButtons.Ok);
+            return;
+        }
+        nowy.Okres = IdxWybranyOkresDodawanie == 0 ? null : DostepneOkresy[IdxWybranyOkresDodawanie];
+        nowy.Forma = IdxWybranaFormaDodawanie == 0 ? null : DostepneFormy[IdxWybranaFormaDodawanie];
+        nowy.Charakter = IdxWybranyCharakterDodawanie == 0 ? null : DostepneCharaktery[IdxWybranyCharakterDodawanie];
+        nowy.Poziom = IdxWybranyPoziomDodawanie == 0 ? null : DostepnePoziomy[IdxWybranyPoziomDodawanie];
+        nowy.Inne = String.IsNullOrEmpty(DodawanieUwagi) ? null : DodawanieUwagi;
+        nowy.Pdf = String.IsNullOrEmpty(DodawaniePdf) ? null : DodawaniePdf;
         await db.ZapiszNowyUtwor(nowy);
-        await MessageBox.Show(MyReferences.MainWindow,
-            "\n          Liczba wykonanych zmian wynosi.          \n",
-            "Podsumowanie", MessageBox.MessageBoxButtons.Ok);
+        DodawanieKompozytor = "";
+        DodawanieTytul = "";
+        IdxWybranyOkresDodawanie = 0;
+        IdxWybranaFormaDodawanie = 0;
+        IdxWybranyCharakterDodawanie = 0;
+        IdxWybranyPoziomDodawanie = 0;
+        DodawanieUwagi = "";
+        DodawaniePdf = "";
     }
 
     [RelayCommand]

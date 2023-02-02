@@ -81,6 +81,62 @@ public class DataAccess
 
     public async Task ZapiszNowyUtwor(Utwor nowy)
     {
-        await Task.Delay(100);
+        SQLiteConnection connection = new SQLiteConnection();
+        connection.ConnectionString = ConfigurationManager.ConnectionStrings["Myconnstr"].ConnectionString;
+        await connection.OpenAsync();
+        var sb = new StringBuilder();
+        sb.Append("INSERT INTO tabela (kompozytor, tytul");
+        if (nowy.Okres is not null)
+        {
+            sb.Append(", okres");
+        }
+        if (nowy.Forma is not null)
+        {
+            sb.Append(", forma");
+        }
+        if (nowy.Charakter is not null)
+        {
+            sb.Append(", charakter");
+        }
+        if (nowy.Poziom is not null)
+        {
+            sb.Append(", poziom");
+        }
+        if (nowy.Inne is not null)
+        {
+            sb.Append(", inne");
+        }
+        if (nowy.Pdf is not null)
+        {
+            sb.Append(", pdf");
+        }
+        sb.Append($") VALUES ('{nowy.Kompozytor}', '{nowy.Tytul}'");
+        if (nowy.Okres is not null)
+        {
+            sb.Append($", '{nowy.Okres}'");
+        }
+        if (nowy.Forma is not null)
+        {
+            sb.Append($", '{nowy.Forma}'");
+        }
+        if (nowy.Charakter is not null)
+        {
+            sb.Append($", '{nowy.Charakter}'");
+        }
+        if (nowy.Poziom is not null)
+        {
+            sb.Append($", '{nowy.Poziom}'");
+        }
+        if (nowy.Inne is not null)
+        {
+            sb.Append($", '{nowy.Inne}'");
+        }
+        if (nowy.Pdf is not null)
+        {
+            sb.Append($", '{nowy.Pdf}'");
+        }
+        sb.Append(")");
+        await connection.ExecuteAsync(sb.ToString());
+        await connection.CloseAsync();
     }
 }
